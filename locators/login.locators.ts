@@ -15,3 +15,4 @@ export default class LoginLocators {
     this.dashboardText = page.getByText('Dashboard').nth(1);
   }
 }
+

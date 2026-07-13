@@ -1,10 +1,14 @@
-import {Page, Locator} from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
-export default class DashboardLocators{
-    dashboardText: Locator;
+export default class DashboardLocators {
+    readonly dashboardText: Locator;
+    readonly organizationLocator: Locator;
 
-    constructor(page:Page){
-        this.dashboardText= page.getByRole('heading', { name: 'Dashboard' });
+
+    constructor(page: Page) {
+        this.dashboardText = page.getByRole('heading', { name: 'Dashboard' });
+        this.organizationLocator =page.getByRole('link', { name: 'Organizations' });
     }
 
 }
+

@@ -17,10 +17,7 @@ export default defineConfig({
   expect: {
     timeout: 5000,
   },
-  use: {
-    actionTimeout: 10000,
-    navigationTimeout: 15000,
-  },
+  tsconfig: './tsconfig.json',
 
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -38,10 +35,13 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
+    actionTimeout: 10000,
+    navigationTimeout: 15000,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    // testIdAttribute: 'data-qa',
+    screenshot: 'only-on-failure',
     testIdAttribute: 'data-slot',
+    video: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */
@@ -52,7 +52,7 @@ export default defineConfig({
     },
     {
       name: 'edge',
-      use: { ...devices['Desktop Edge']},
+      use: { ...devices['Desktop Edge'] },
     },
     {
       name: 'firefox',

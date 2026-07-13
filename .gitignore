@@ -6,3 +6,12 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+assets
+screenshoots
+screenshots/
+test-results/
+playwright-report/
+blob-report/
+videos/
+reports/
+package-lock.json
