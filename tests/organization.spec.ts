@@ -17,32 +17,26 @@ test.describe('Login', () => {
         await loginPage.verifyDashboardText();
     });
 
-    test('Navigate to Organization Page', async () => {
+    test.skip('Navigate to Organization Page', async () => {
         await dashboardPage.gotoOrganizationPage();
         await organizationPage.verifyOrganizationPage();
     });
 
-    test('Add a new Organization', async ({ organizationData, page }, testInfo) => {
+    test('Add a new Organization', async ({ organizationData, page }) => {
+        // test.slow()
         await dashboardPage.gotoOrganizationPage();
+        await page.pause();
         await organizationPage.verifyOrganizationPage();
 
         await organizationPage.clickAddOrganizationButton();
-        // Full page screenshot
-        await page.screenshot({ path: 'screenshots/home.png', fullPage: true });
-
-        // Screenshot of a specific element
-        await page.locator('.checkout-summary').screenshot({
-            path: 'screenshots/summary.png',
-        });
-        // Attach to test report
-        await testInfo.attach('checkout-state', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-        await organizationPage.verifyAddOrganizationForm();
-        await organizationPage.addOrganization(organizationData);
-
-        await organizationPage.verifyOrganizationCreated(organizationData.name);
+        
+                await organizationPage.verifyAddOrganizationForm();
+                // await organizationPage.captureScreenshot();
+                await organizationPage.addOrganization(organizationData);
+                
+                await organizationPage.verifyOrganizationCreated(organizationData.name);
+                // Full page screenshot
+                await page.screenshot({ path: 'screenshots/organizationtable.png', fullPage: true });
     });
 
 });

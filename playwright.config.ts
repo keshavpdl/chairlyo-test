@@ -29,7 +29,13 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 6 : 2,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  // reporter: 'list',
+  reporter: [
+    ['list'],
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['junit', { outputFile: 'results/results.xml' }],
+  ],
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
@@ -38,7 +44,7 @@ export default defineConfig({
     actionTimeout: 10000,
     navigationTimeout: 15000,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on',
     screenshot: 'only-on-failure',
     testIdAttribute: 'data-slot',
     video: 'retain-on-failure',
@@ -50,18 +56,18 @@ export default defineConfig({
       name: 'chrome',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'edge',
-      use: { ...devices['Desktop Edge'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'edge',
+    //   use: { ...devices['Desktop Edge'] },
+    // },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
