@@ -16,3 +16,6 @@ videos/
 reports/
 package-lock.json
 results/
+
+# Environment variables
+.env
