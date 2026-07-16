@@ -4,9 +4,9 @@ import LoginPage from '../pages/LoginPage';
 test.describe('Login', () => {
   let loginPage: LoginPage;
 
-  test.beforeEach('Navigate to Chairlyo Login Page', async ({ baseUrl, page }) => {
+  test.beforeEach('Navigate to Chairlyo Login Page', async ({ uiBaseUrl, page }) => {
     loginPage = new LoginPage(page);
-    await loginPage.navigateToChairlyo(baseUrl);
+    await loginPage.navigateToChairlyo(uiBaseUrl);
   });
 
   test('Login with valid credentials', async ({ email, password, page }) => {
@@ -69,7 +69,7 @@ test.describe('Login', () => {
     // await expect(page).toHaveURL(/dashboard/);
   });
 
-  test.skip('Login with invalid credentials', async ({ page }) => {
+  test('Login with invalid credentials', async ({ page }) => {
     await page.locator('[type="email"]').fill('invalid@email.com');
     await page.locator('[name="password"]').fill('invalidpassword');
 
@@ -83,7 +83,7 @@ test.describe('Login', () => {
     // OR if you only want to check that an error is displayed
     // await expect(page.getByRole('alert')).toContainText('Invalid');
   });
-  test.skip('test', async ({ page, email, password }) => {
+  test('test', async ({ page, email, password }) => {
     // const loginPage = new LoginPage(page);
     await page.locator('//*[@id="email"]').fill(email);
     // await page.getByLabel('Email*').fill(email);

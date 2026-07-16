@@ -1,7 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 
 export default class OrganizationLocators {
-    organizationText: Locator;
     // List page header
     readonly pageTitle: Locator;
     readonly pageDescription: Locator;
@@ -27,6 +26,8 @@ export default class OrganizationLocators {
     readonly adminColumn: Locator;
     readonly editIcon: Locator;
     readonly deleteIcon: Locator;
+    readonly confirmDeleteText: Locator;
+    readonly confirmDeleteButton: Locator;
 
     // Add Organization form - header
     readonly addOrgFormTitle: Locator;
@@ -57,9 +58,6 @@ export default class OrganizationLocators {
     readonly phoneInput: Locator;
     readonly enableEmailNotificationsToggle: Locator;
 
-    //image upload successful
-    readonly imageUploadSuccessalertMessage: Locator;
-
     //select plan type
     readonly planLocator: Locator
     readonly planTypeOptionLocator: Locator
@@ -70,7 +68,6 @@ export default class OrganizationLocators {
 
 
     constructor(page: Page) {
-        this.organizationText = page.getByRole('heading', { name: 'Organization' });
         // List page header
         this.pageTitle = page.getByRole('heading', { name: 'Organization' });
         this.pageDescription = page.getByText('Manage all studio organizations');
@@ -93,9 +90,14 @@ export default class OrganizationLocators {
         this.planColumn = page.locator('table thead').getByText('PLAN');
         this.trialEndsColumn = page.locator('table thead').getByText('TRIAL ENDS');
         this.adminColumn = page.locator('table thead').getByText('ADMIN');
-        this.editIcon = page.locator('table tbody tr').locator('svg').nth(1);
-        this.deleteIcon = page.locator('table tbody tr').locator('svg').nth(3);
+        this.editIcon = page.locator('[title="Edit organization"]');
+        this.deleteIcon = page.locator('[title="Delete"]');
+        this.confirmDeleteText = page.getByRole('textbox', { name: 'Type Delete Organization here' });
+
+
         this.alertMessage = page.locator('[role="alert"]');
+        // TODO: verify against actual confirmation dialog markup
+        this.confirmDeleteButton = page.getByRole('button', { name: /Delete|Confirm/i });
 
         // Add Organization form - header
         this.addOrgFormTitle = page.getByRole('heading', { name: 'Add Organization' });
@@ -125,9 +127,6 @@ export default class OrganizationLocators {
         //plan type
         this.planLocator = page.getByRole('combobox').filter({ hasText: 'e.g Monthly' });
         this.planTypeOptionLocator = page.getByRole('option', { name: 'Claude' });
-
-        //image upload success
-        this.imageUploadSuccessalertMessage = page.locator('[role="alert"]');
 
         // Add Organization form - Main Admin Details
         this.firstNameInput = page.getByPlaceholder('e.g. Obin Bade');
