@@ -49,7 +49,7 @@ export default class OrganizationPage extends BasePage {
     async uploadOrganizationImage(filePath: string) {
         await this.organizationLocators.browseFilesButton.setInputFiles(filePath);
         await this.organizationLocators.cropAndUploadButton.click();
-        await expect(this.organizationLocators.imageUploadSuccessalertMessage).toBeVisible();
+        await expect(this.organizationLocators.alertMessage).toBeVisible();
     }
 
     async fillTrialDays(trialDays: string) {
@@ -136,10 +136,25 @@ export default class OrganizationPage extends BasePage {
         await expect(this.getOrganizationRowByName(name)).toBeVisible();
     }
 
-    // async editOrganization(name: string, updatedTrialDays: string){
-    //     await this.getOrganizationRowByName. editlocato.click();
-    //     await this.fillTrialDays(updatedTrialDays)
-    // }
+    async clickEditIcon(name: string) {
+        await this.getOrganizationRowByName(name).locator(this.organizationLocators.editIcon).click();
+    }
+
+    async editOrganization(name: string, updatedTrialDays: string) {
+        await this.clickEditIcon(name);
+        await this.fillTrialDays(updatedTrialDays);
+        await this.clickSaveChanges();
+    }
+
+    async clickDeleteIcon(name: string) {
+        await this.getOrganizationRowByName(name).locator(this.organizationLocators.deleteIcon).click();
+    }
+
+    async deleteOrganization(name: string) {
+        await this.clickDeleteIcon(name);
+        await this.organizationLocators.confirmDeleteText.fill('Delete Organization');
+        await this.organizationLocators.confirmDeleteButton.click();
+    }
 
     // async captureScreenshot() {
     //     testInfo: any

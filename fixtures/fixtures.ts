@@ -1,50 +1,56 @@
-import path from 'path';
 import { expect as baseExpect, test as baseTest } from '@playwright/test';
+import { ApiClient } from '../api/client/ApiClient';
+import { AuthService } from '../api/services/AuthService';
+import { OrganizationService } from '../api/services/OrganizationService';
+import { env } from '../config/env';
+import { buildOrganizationData, OrganizationData } from './test-data';
 
-export type OrganizationData = {
-  name: string;
-  slug: string;
-  status: string;
-  planType: string;
-  trialDays?: string;
-  imagePath?: string;
-  admin: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    phone: string;
-  };
-};
+export { toApiPayload } from './api-mappers';
+export type { OrganizationData } from './test-data';
 
 type Fixtures = {
   email: string;
   password: string;
-  baseUrl: string;
+  uiBaseUrl: string;
+  apiBaseUrl: string;
   organizationData: OrganizationData;
+  apiClient: ApiClient;
+  authService: AuthService;
+  authToken: string;
+  organizationService: OrganizationService;
+  planTypeId: number;
 };
 
 export const test = baseTest.extend<Fixtures>({
-  email: 'admin@chairlyo.com',
-  password: 'adminpassword',
-  baseUrl: 'https://stage.chairlyo.com',
+  email: env.email,
+  password: env.password,
+  uiBaseUrl: env.uiBaseUrl,
+  apiBaseUrl: env.apiBaseUrl,
+
   organizationData: async ({}, use) => {
-    const uniqueId = Date.now();
-    await use({
-      name: `Web Development ${uniqueId}`,
-      slug: `web-development-${uniqueId}`,
-      status: 'Trial',
-      planType: 'basic',
-      trialDays: '10',
-      imagePath: path.join(__dirname, '..', 'assets', 'images.jpeg'),
-      admin: {
-        firstName: 'Obin',
-        lastName: 'Shrestha',
-        email: `obin+${uniqueId}@gmail.com`,
-        password: 'Password@123',
-        phone: '9801123333',
-      },
-    });
+    await use(buildOrganizationData());
+  },
+
+  apiClient: async ({ request, apiBaseUrl }, use) => {
+    await use(new ApiClient(request, apiBaseUrl));
+  },
+
+  authService: async ({ apiClient }, use) => {
+    await use(new AuthService(apiClient));
+  },
+
+  authToken: async ({ authService, email, password }, use) => {
+    const token = await authService.loginWithAPI(email, password);
+    await use(token);
+  },
+
+  organizationService: async ({ apiClient, authToken }, use) => {
+    await use(new OrganizationService(apiClient));
+  },
+
+  // Plan type "Claude" is confirmed to always have id 40.
+  planTypeId: async ({}, use) => {
+    await use(40);
   },
 });
 
