@@ -19,3 +19,4 @@ export function toApiPayload(organizationData: OrganizationData, planTypeId: num
     trial_days: organizationData.trialDays ?? '10',
   };
 }
+// This is commonly used to map the organization data to the API payload format, ensuring that the data structure aligns with the expected input for API requests.
